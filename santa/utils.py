@@ -7,13 +7,15 @@ import numpy as np
 import yfinance as yf
 
 # ohlcv 데이터 수집 및 전처리
-def load_ohlcv(symbol):
+def load_ohlcv(symbol, drop=False, col_price='Adj Close'):
     # ohlcv 데이터 수집 (전체 기간)
     df = yf.download(symbol)
 
     # 결측치 처리 : 이전 값으로 채우고 제거
     df = df.fillna(method='ffill').dropna()
 
+    if drop:
+        return df[[col_price]] # price 컬럼만 남기고 모두 제거
     return df
 
 # 일일 수익률 계산
